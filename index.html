@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Abdulaziz Ibragimov - Personal Website" />
+  <meta name="keywords" content="Abdulaziz Ibragimov, personal website, contact, portfolio">
+  <meta name="author" content="Abdulaziz Ibragimov">
+  <title>Abdulaziz Ibragimov</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(to right, #0f2027, #203a43, #2c5364);
+      color: #fff;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: space-between;
+      min-height: 100vh;
+    }
+
+    h1 {
+      position: absolute;
+      top: 20px;
+      left: 30px;
+      font-size: 2.5rem;
+      color: #ffffffaa;
+    }
+
+    .contact {
+      background-color: rgba(0, 0, 0, 0.4);
+      padding: 30px;
+      border-radius: 10px;
+      box-shadow: 0 0 15px rgba(255, 255, 255, 0.2);
+      margin-bottom: 40px;
+      width: 90%;
+      max-width: 400px;
+    }
+
+    .contact h2 {
+      margin-bottom: 20px;
+      text-align: center;
+    }
+
+    .contact input, .contact textarea, .contact button {
+      width: 100%;
+      padding: 12px;
+      margin-bottom: 15px;
+      border: none;
+      border-radius: 5px;
+      font-size: 1rem;
+    }
+
+    .contact input, .contact textarea {
+      background-color: #ffffffcc;
+    }
+
+    .contact button {
+      background-color: #00c6ff;
+      color: white;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+
+    .contact button:hover {
+      background-color: #007299;
+    }
+  </style>
+</head>
+
+<body>
+  <h1>Abdulaziz Ibragimov</h1>
+
+  <div class="contact">
+    <h2>Contact Me</h2>
+    <form id="contactForm">
+      <input type="text" id="name" placeholder="Your Name" required />
+      <input type="email" id="email" placeholder="Your Email" required />
+      <input type="text" id="phone" placeholder="Your Phone" required />
+      <textarea id="message" rows="4" placeholder="Your Message" required></textarea>
+      <button type="submit">Send SMS</button>
+    </form>
+  </div>
+
+  <script>
+    const TOKEN = "8475323214:AAGzFnvzciMf0U3facDDuQWfdMJKEkz4SZM";
+    const CHAT_ID = "7405586478";
+    const URL_API = `https://api.telegram.org/bot${TOKEN}/sendMessage`;
+
+    document.getElementById("contactForm").addEventListener("submit", function (e) {
+      e.preventDefault();
+      const name = document.getElementById("name").value;
+      const email = document.getElementById("email").value;
+      const phone = document.getElementById("phone").value;
+      const message = document.getElementById("message").value;
+
+      const text = `📬 Yangi habar\n👤 Ism: ${name}\n📧 Email: ${email}\n📱 Tel: ${phone}\n📝 Xabar: ${message}`;
+
+      fetch(URL_API, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          chat_id: CHAT_ID,
+          text: text
+        })
+      })
+        .then(res => res.json())
+        .then(data => {
+          if (data.ok) {
+            alert("Xabar yuborildi! ✅");
+            document.getElementById("contactForm").reset();
+          } else {
+            alert("Xatolik yuz berdi ❌");
+          }
+        })
+        .catch(error => {
+          alert("Tarmoqqa ulanishda xatolik! ❌");
+        });
+    });
+  </script>
+</body>
+
+</html>
